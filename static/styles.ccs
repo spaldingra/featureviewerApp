@@ -1,0 +1,10 @@
+body {
+    background: LightSlateGray;
+    color: Ivory;
+    padding: 10px 10px 10px 10px;
+}
+h1 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+}
