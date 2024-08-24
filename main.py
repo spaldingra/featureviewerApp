@@ -12,10 +12,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 
+## upload file 
 class UploadFileForm(FlaskForm):
     file = FileField("File", validators=[InputRequired()])
     submit = SubmitField("Upload File")
 
+## main page
 @app.route('/', methods=('GET', 'POST'))
 def index():
     form = UploadFileForm()
@@ -26,5 +28,6 @@ def index():
         return "File has been uploaded."
     return render_template('index.html', form=form)
 
+## call main
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
