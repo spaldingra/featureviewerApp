@@ -1,0 +1,11 @@
+####   TERMINAL COMMAND LINE PROMPTS   ####
+####   REFERENCE DOCUMENT ONLY   ####
+
+## cutadapt
+
+## bowtie index
+
+## bowtie align
+
+## samtools
+
