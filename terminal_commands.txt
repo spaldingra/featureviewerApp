@@ -6,6 +6,7 @@
 ## bowtie index
 
 ## bowtie align
+bowtie2 -x ASM -f bs_reads.fasta.gz -S bs_aligned.sam
 
 ## samtools
 
