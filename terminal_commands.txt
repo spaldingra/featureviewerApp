@@ -1,12 +1,34 @@
 ####   TERMINAL COMMAND LINE PROMPTS   ####
 ####   REFERENCE DOCUMENT ONLY   ####
 
-## cutadapt
+	all commands run at terminal through conda venv
+	necessary tools:
+		1. cutadapt
+		2. bowtie2
+		3. samtools
+		4. IGV (for alignemnt verification/visualization)
 
-## bowtie index
+		** read quality check not preformed **
 
-## bowtie align
-bowtie2 -x ASM -f bs_reads.fasta.gz -S bs_aligned.sam
+#### trim adapters ####
+	
+	utilize cutadapt,
+	adapter trim not needed
 
-## samtools
+#### align sequence ####
+	
+	1. bowtie index
+
+
+	2. bowtie align
+
+			bowtie2 -x ASM -f bs_reads.fasta.gz -S bs_aligned.sam
+
+#### convert and sort/index ####
+
+	1. samtools convert
+
+	2. samtools sort and index
+
+		samtools sort -o bs_sorted.bam bs_aligned.bam
 
