@@ -32,5 +32,5 @@ def parse_vcf(vcf_file):
 ## main run
 if __name__ == "__main__":
 
-    file = "files/bs_variants.vcf.gz"
+    file = "static/files/bs_variants.vcf.gz"
     parse_vcf(file)
