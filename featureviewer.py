@@ -1,6 +1,36 @@
 ## feature viewer script
+## Author: Reid Spalding
+## Ver. 0.0
+## Updated: Aug. 25, 2024
 
 ## imports
 import pysam
 
-file = 
+## read vcf
+def parse_vcf(vcf_file):
+    vcf = pysam.VariantFile(vcf_file, "r")
+
+    ## iterate over vcf
+    for rec in vcf.fetch():
+
+        ## inits
+        chrom = rec.chrom
+        pos = rec.pos
+        ref = rec.ref
+        alts = rec.alts
+
+        ## ignore multi allele
+        if len(alts) > 1:  
+            continue
+
+        alt = alts[0]
+
+        ## find SNP
+        if len(ref) == 1 and len(alt) == 1:
+            print(f"SNP found: {chrom}:{pos} {ref}->{alt}")
+
+## main run
+if __name__ == "__main__":
+
+    file = "files/bs_variants.vcf.gz"
+    parse_vcf(file)

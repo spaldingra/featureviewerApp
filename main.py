@@ -1,3 +1,8 @@
+## main python for featureviewer app
+## Author: Reid Spalding
+## Ver. 0.0
+## Updated: Aug. 25, 2024
+
 ## imports
 from flask import Flask, render_template
 from flask_wtf import FlaskForm
