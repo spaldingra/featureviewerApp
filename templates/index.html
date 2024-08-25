@@ -4,15 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title>App Home</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+
 </head>
 <body>
     <h1>Upload a File</h1>
-
-    <!-- Display the result if available -->
-    {% if result %}
-        <p>Script result:</p>
-        <pre>{{ result }}</pre>
-    {% endif %}
 
     <!-- Form for uploading files -->
     <form method="POST" action="/upload" enctype="multipart/form-data">
@@ -30,5 +40,7 @@
             </ul>
         {% endif %}
     {% endwith %}
+
+    
 </body>
 </html>

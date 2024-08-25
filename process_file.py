@@ -1,5 +1,13 @@
+## feature viewer script
+## Author: Reid Spalding
+## Ver. 0.0
+## Updated: Aug. 25, 2024
+
+## imports
 import sys
 import pysam
+import pandas as pd
+
 
 ## read vcf
 def parse_vcf(vcf_file):
@@ -25,28 +33,26 @@ def parse_vcf(vcf_file):
 
             ## find SNP
             if len(ref) == 1 and len(alt) == 1:
-                output.append(f"SNP found: {chrom}:{pos} {ref}->{alt}")
+                snp =[str(chrom), str(pos), str(ref), str(alt)]
+                output.append(snp)
 
         return output
     
     except Exception as e:
         return f"Error processing file: {e}"
 
-def process_file(filepath):
-    # Example: Read the file and print its content (or perform any operation)
-    try:
-        with open(filepath, 'r') as file:
-            content = file.read()
-        # Process the file content and return a result (e.g., first 100 characters)
-        return content[:100]
-    except Exception as e:
-        return f"Error processing file: {e}"
+
 
 if __name__ == "__main__":
-    # Expect the file path as the first argument
-    if len(sys.argv) > 1:
-        filepath = sys.argv[1]
-        result = parse_vcf(filepath)
-        print(result)  # Output will be captured and returned to Flask
-    else:
-        print("No file path provided.")
+    ## get file path from args
+    result = parse_vcf('static/files/bs_variants.vcf.gz')
+    #for i in result:
+        #print(i)  # print out
+    #print(result)
+
+
+    cols = ['Gene', 'LOC', 'Ref_Base', 'SNP']
+    df = pd.DataFrame(result, columns = cols)
+    html = df.to_html()
+    #print(df)
+    #print(html)

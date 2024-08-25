@@ -54,6 +54,10 @@ def upload_file():
     flash('File not allowed')
     return redirect(request.url)
 
+@app.route('/results')
+def results():
+    return render_template('results.html')
+
 ## feature viewer script
 def get_feats(filepath):
     ## run featureviewer.py
