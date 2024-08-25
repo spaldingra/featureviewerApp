@@ -6,3 +6,5 @@ pyvenv.cfg
 static/files/bs_variants.vcf.gz
 __pycache__
 test.py
+index2.html
+uploads

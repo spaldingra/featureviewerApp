@@ -1,54 +1,74 @@
 ## main python for featureviewer app
 ## Author: Reid Spalding
-## Ver. 0.0
+## Ver. 0.1
 ## Updated: Aug. 25, 2024
 
 ## imports
-from flask import Flask, render_template, redirect, url_for
-from flask_wtf import FlaskForm
-from wtforms import FileField, SubmitField
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request, redirect, url_for, flash
 import os
-from wtforms.validators import InputRequired
-
 import subprocess
 
-
-## flask app creation
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'testkey'
-app.config['UPLOAD_FOLDER'] = 'static/files'
+app.secret_key = 'supersecretkey'  
 
-## upload file 
-class UploadFileForm(FlaskForm):
-    file = FileField("File", validators=[InputRequired()])
-    submit = SubmitField("Upload File")
+## set upload path
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-## main page
-@app.route('/', methods=('GET', 'POST'))
+## file extension checking
+ALLOWED_EXTENSIONS = {'gz', 'vcf'}
+
+## check file upload extension
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+## init home page
+@app.route('/')
 def index():
-    form = UploadFileForm()
-    if form.validate_on_submit():
-        ## get file, save file, return comf.
-        file = form.file.data
-        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
-        return redirect(url_for('featureviewer'))
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
-## feature viewer page
-@app.route('/featureviewer', methods=('GET', 'POST'))
-def featureviewer():
-    return render_template('featureviewer.html')
+## init upload page
+@app.route('/upload', methods=['POST'])
+def upload_file():
 
-@app.route('/run_code', methods=['POST'])
-def run_code():
-    ## run script
-    result = subprocess.run(['python', 'featureviewer.py'], capture_output=True, text=True)
-    result = result.stdout.strip()
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
     
-    ## show result
-    return render_template('featureviewer.html', result=result)
+    file = request.files['file']
+
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        filename = file.filename
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        ## run feature viewer
+        result = get_feats(filepath)
+
+        return render_template('index.html', result=result)
+
+    flash('File not allowed')
+    return redirect(request.url)
+
+## feature viewer script
+def get_feats(filepath):
+    ## run featureviewer.py
+    try:
+        result = subprocess.run(
+            ['python', 'featureviewer.py', filepath],  # Pass the file path to the script
+            capture_output=True, 
+            text=True
+        )
+        return result.stdout.strip()  # Return the output of the script
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 ## call main
 if __name__ == '__main__':
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
     app.run(debug=True, host='0.0.0.0')
