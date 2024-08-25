@@ -11,6 +11,8 @@ from werkzeug.utils import secure_filename
 import os
 from wtforms.validators import InputRequired
 
+import subprocess
+
 
 ## flask app creation
 app = Flask(__name__)
@@ -27,15 +29,25 @@ class UploadFileForm(FlaskForm):
 def index():
     form = UploadFileForm()
     if form.validate_on_submit():
-        #get file, save file, return comf.
+        ## get file, save file, return comf.
         file = form.file.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
         return redirect(url_for('featureviewer'))
     return render_template('index.html', form=form)
 
+## feature viewer page
 @app.route('/featureviewer', methods=('GET', 'POST'))
 def featureviewer():
     return render_template('featureviewer.html')
+
+@app.route('/run_code', methods=['POST'])
+def run_code():
+    ## run script
+    result = subprocess.run(['python', 'featureviewer.py'], capture_output=True, text=True)
+    result = result.stdout.strip()
+    
+    ## show result
+    return render_template('featureviewer.html', result=result)
 
 ## call main
 if __name__ == '__main__':

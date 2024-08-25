@@ -33,6 +33,12 @@ def parse_vcf(vcf_file):
 
     return output
 
+def get_snps():
+
+    file = "static/files/bs_variants.vcf.gz"
+    snps = parse_vcf(file)
+    return snps
+
 ## main run
 if __name__ == "__main__":
 
