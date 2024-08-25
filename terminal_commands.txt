@@ -6,6 +6,7 @@
 		1. cutadapt
 		2. bowtie2
 		3. samtools
+		4. bcftools
 		4. IGV (for alignemnt verification/visualization)
 
 		** read quality check not preformed **
@@ -31,4 +32,10 @@
 	2. samtools sort and index
 
 		samtools sort -o bs_sorted.bam bs_aligned.bam
+
+#### call variants ####
+
+	1. bcftools call variants
+
+		bcftools mpileup -Ou -f bs_ref.fasta bs_sorted.bam | bcftools call -mv -Oz -o bs_variants.vcf.gz
 
