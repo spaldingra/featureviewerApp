@@ -56,3 +56,9 @@ if __name__ == "__main__":
     html = df.to_html()
     #print(df)
     #print(html)
+
+    out = open('templates/results.html', 'w')
+    out.write(html)
+    out.close()
+
+    print('done')

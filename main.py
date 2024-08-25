@@ -25,6 +25,7 @@ def allowed_file(filename):
 ## init home page
 @app.route('/')
 def index():
+    reset_results()
     return render_template('index.html')
 
 ## init upload page
@@ -49,7 +50,12 @@ def upload_file():
         ## run feature viewer
         result = get_feats(filepath)
 
-        return render_template('index.html', result=result)
+        if result:
+
+            return redirect(url_for('results'))
+
+        else:
+            return render_template('index.html', result=result)
 
     flash('File not allowed')
     return redirect(request.url)
@@ -70,9 +76,22 @@ def get_feats(filepath):
         return result.stdout.strip()  # Return the output of the script
     except Exception as e:
         return f"An error occurred: {e}"
+    
+## reset results page
+def reset_results():
+    f = open('templates/results.html', 'w')
+    init = open('templates/init.txt', 'r')
+
+    data = init.read()
+    init.close()
+
+    f.write(data)
+    f.close()
 
 ## call main
 if __name__ == '__main__':
+
+    reset_results()
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
     app.run(debug=True, host='0.0.0.0')

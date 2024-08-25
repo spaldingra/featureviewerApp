@@ -41,6 +41,18 @@ def parse_vcf(vcf_file):
     except Exception as e:
         return f"Error processing file: {e}"
 
+## print results into html format
+def printout(results):
+
+    ## create data frame, convert to html
+    cols = ['Gene', 'LOC', 'Ref_Base', 'SNP']
+    df = pd.DataFrame(result, columns = cols)
+    html = df.to_html()
+
+    ## print to html file
+    out = open('templates/results.html', 'w')
+    out.write(html)
+    out.close()
 
 
 if __name__ == "__main__":
@@ -48,6 +60,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         filepath = sys.argv[1]
         result = parse_vcf(filepath)
-        print('<h1>test injection</h1>')  # print out
+        printout(result)
+        print(result)  # print out
+
     else:
         print("No file path provided.")
