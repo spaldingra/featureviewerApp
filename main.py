@@ -4,7 +4,7 @@
 ## Updated: Aug. 25, 2024
 
 ## imports
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -30,8 +30,12 @@ def index():
         #get file, save file, return comf.
         file = form.file.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
-        return "File has been uploaded."
+        return redirect(url_for('featureviewer'))
     return render_template('index.html', form=form)
+
+@app.route('/featureviewer', methods=('GET', 'POST'))
+def featureviewer():
+    return render_template('featureviewer.html')
 
 ## call main
 if __name__ == '__main__':
