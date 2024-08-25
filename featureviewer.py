@@ -8,7 +8,9 @@ import pysam
 
 ## read vcf
 def parse_vcf(vcf_file):
+
     vcf = pysam.VariantFile(vcf_file, "r")
+    output = []
 
     ## iterate over vcf
     for rec in vcf.fetch():
@@ -27,10 +29,13 @@ def parse_vcf(vcf_file):
 
         ## find SNP
         if len(ref) == 1 and len(alt) == 1:
-            print(f"SNP found: {chrom}:{pos} {ref}->{alt}")
+            output.append(f"SNP found: {chrom}:{pos} {ref}->{alt}")
+
+    return output
 
 ## main run
 if __name__ == "__main__":
 
     file = "static/files/bs_variants.vcf.gz"
-    parse_vcf(file)
+    snps = parse_vcf(file)
+    print(snps)
