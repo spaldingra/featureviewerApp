@@ -1,7 +1,9 @@
-## feature viewer script
+## feature viewer script, no longer dependency
 ## Author: Reid Spalding
-## Ver. 0.0
-## Updated: Aug. 25, 2024
+## Ver. NULL
+## Updated: Aug. 26, 2024
+
+#### outdated, features condsensed into featureviewer.py
 
 ## imports
 import sys
