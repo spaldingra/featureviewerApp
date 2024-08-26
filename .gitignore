@@ -8,3 +8,5 @@ __pycache__
 test.py
 index2.html
 uploads
+bs_ref.fasta
+bs_sorted.bam
