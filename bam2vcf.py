@@ -1,6 +1,6 @@
 ## bam to vcf script
 ## Author: Reid Spalding
-## Ver. 0.0
+## Ver. 0.2
 ## Updated: Aug. 25, 2024
 
 import subprocess
@@ -9,31 +9,28 @@ import sys
 def vcf_from_bam(bam_unsort, reference_fasta, output_vcf):
 
     bam_sorted = 'temp_sorted.bam'
-    pileup_out = 'temp_pileup.bcf'
 
-    # Command to sort the BAM file with samtools
+    ## sam sort command
     samtools_sort_cmd = ['samtools', 'sort', '-o', bam_sorted, bam_unsort]
 
-    # Execute the samtools sort command
     subprocess.run(samtools_sort_cmd, check=True)
 
-    # Command to run bcftools mpileup and pipe it to bcftools call
+    ## bcf pile and call command
     mpileup_cmd = ['bcftools', 'mpileup', '-Ou', '-f', reference_fasta, bam_sorted]
     call_cmd = ['bcftools', 'call', '-mv', '-Oz', '-o', output_vcf]
 
-    # Start the mpileup process
+    ## run one, pipe result
     mpileup_process = subprocess.Popen(mpileup_cmd, stdout=subprocess.PIPE)
 
-    # Start the call process, piping the output of mpileup into it
     call_process = subprocess.Popen(call_cmd, stdin=mpileup_process.stdout, stdout=subprocess.PIPE)
 
-    # Close the stdout of mpileup to indicate that no more data will be sent
+    ## close pipe
     mpileup_process.stdout.close()
 
-    # Wait for the call process to finish
+    ## wait for results
     call_output, call_error = call_process.communicate()
 
-    # Check if the call process was successful
+    ## check for err/results
     if call_process.returncode == 0:
         print("Variants successfully called and saved to '" + output_vcf + "'")
     else:

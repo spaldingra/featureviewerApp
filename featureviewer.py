@@ -1,6 +1,6 @@
 ## feature viewer script
 ## Author: Reid Spalding
-## Ver. 0.0
+## Ver. 0.2
 ## Updated: Aug. 25, 2024
 
 ## imports
@@ -50,7 +50,14 @@ def printout(results):
     html = df.to_html()
 
     ## print to html file
+    head_string = '''<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"<title>Results</title></head>'''
+
     out = open('templates/results.html', 'w')
+    out.write('')
+    out.close()
+
+    out = open('templates/results.html', 'a')
+    out.write(head_string)
     out.write(html)
     out.close()
 
@@ -61,7 +68,7 @@ if __name__ == "__main__":
     #result = parse_vcf('output.vcf.gz')
     #print(result)
     #exit()
-    
+
     ## get file path from args
     if len(sys.argv) > 1:
         filepath = sys.argv[1]

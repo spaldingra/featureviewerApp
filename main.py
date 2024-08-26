@@ -1,6 +1,6 @@
 ## main python for featureviewer app
 ## Author: Reid Spalding
-## Ver. 0.1
+## Ver. 0.2
 ## Updated: Aug. 25, 2024
 
 ## imports
@@ -29,10 +29,11 @@ def index():
     return render_template('index.html')
 
 
-# Handle file upload
+## file upload
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    # Check if both file inputs are present
+
+    ##check inputs
     if 'file1' not in request.files or 'file2' not in request.files:
         flash('Both files must be uploaded!')
         return redirect(request.url)
@@ -40,12 +41,11 @@ def upload_file():
     file1 = request.files['file1']
     file2 = request.files['file2']
 
-    # Ensure both files have been selected
     if file1.filename == '' or file2.filename == '':
         flash('Both files must be selected!')
         return redirect(request.url)
 
-    # Ensure both files are allowed
+    ## check extentions
     if allowed_file(file1.filename) and allowed_file(file2.filename):
         filename1 = file1.filename
         filename2 = file2.filename
@@ -56,7 +56,7 @@ def upload_file():
         file1.save(filepath1)
         file2.save(filepath2)
 
-        # Process the files (this function should be implemented)
+        ## run code on files
         result = process_files(filepath1, filepath2)
 
         if result:
