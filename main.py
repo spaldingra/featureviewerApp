@@ -64,6 +64,15 @@ def upload_file():
 def results():
     return render_template('results.html')
 
+## convert bam script
+def get_vcf(bam, fasta):
+
+    try:
+        result = 0
+
+    except Exception as e:
+        return f"An error occurred: {e}"
+
 ## feature viewer script
 def get_feats(filepath):
     ## run featureviewer.py

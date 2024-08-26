@@ -56,6 +56,12 @@ def printout(results):
 
 
 if __name__ == "__main__":
+
+    ## debug
+    #result = parse_vcf('output.vcf.gz')
+    #print(result)
+    #exit()
+    
     ## get file path from args
     if len(sys.argv) > 1:
         filepath = sys.argv[1]
