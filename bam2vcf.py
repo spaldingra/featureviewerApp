@@ -3,8 +3,8 @@
 ## Ver. 0.0
 ## Updated: Aug. 25, 2024
 
-import pysam
 import subprocess
+import sys
 
 def vcf_from_bam(bam_unsort, reference_fasta, output_vcf):
 
@@ -40,8 +40,23 @@ def vcf_from_bam(bam_unsort, reference_fasta, output_vcf):
         print(f"Error in bcftools call: {call_error.decode('utf-8') if call_error else 'Unknown error'}")
 
 if __name__ == "__main__":
-    bam_file = "bs_aligned.bam"
-    reference_fasta = "bs_ref.fasta"
+
+    ## debug
+    #bam_file = "bs_aligned.bam"
+    #reference_fasta = "bs_ref.fasta"
+    #output_vcf = "output.vcf.gz"
+    #vcf_from_bam(bam_file, reference_fasta, output_vcf)
+    
     output_vcf = "output.vcf.gz"
 
-    vcf_from_bam(bam_file, reference_fasta, output_vcf)
+    ## get file path from args
+    if len(sys.argv) > 3:
+        bam_file = sys.argv[1]
+        reference_fasta = sys.argv[2]
+        output_vcf = sys.argv[3]
+        vcf_from_bam(bam_file, reference_fasta, output_vcf)
+        print(output_vcf)
+
+    else:
+        print("No file path provided.")
+

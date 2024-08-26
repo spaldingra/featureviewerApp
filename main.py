@@ -16,7 +16,7 @@ UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ## file extension checking
-ALLOWED_EXTENSIONS = {'gz', 'vcf'}
+ALLOWED_EXTENSIONS = {'fasta', 'bam'}
 
 ## check file upload extension
 def allowed_file(filename):
@@ -28,47 +28,65 @@ def index():
     reset_results()
     return render_template('index.html')
 
-## init upload page
+
+# Handle file upload
 @app.route('/upload', methods=['POST'])
 def upload_file():
-
-    if 'file' not in request.files:
-        flash('No file part')
+    # Check if both file inputs are present
+    if 'file1' not in request.files or 'file2' not in request.files:
+        flash('Both files must be uploaded!')
         return redirect(request.url)
     
-    file = request.files['file']
+    file1 = request.files['file1']
+    file2 = request.files['file2']
 
-    if file.filename == '':
-        flash('No selected file')
+    # Ensure both files have been selected
+    if file1.filename == '' or file2.filename == '':
+        flash('Both files must be selected!')
         return redirect(request.url)
 
-    if file and allowed_file(file.filename):
-        filename = file.filename
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+    # Ensure both files are allowed
+    if allowed_file(file1.filename) and allowed_file(file2.filename):
+        filename1 = file1.filename
+        filename2 = file2.filename
 
-        ## run feature viewer
-        result = get_feats(filepath)
+        filepath1 = os.path.join(app.config['UPLOAD_FOLDER'], filename1)
+        filepath2 = os.path.join(app.config['UPLOAD_FOLDER'], filename2)
+
+        file1.save(filepath1)
+        file2.save(filepath2)
+
+        # Process the files (this function should be implemented)
+        result = process_files(filepath1, filepath2)
 
         if result:
-
             return redirect(url_for('results'))
 
-        else:
-            return render_template('index.html', result=result)
-
-    flash('File not allowed')
+    flash('File not allowed or error in processing!')
     return redirect(request.url)
 
 @app.route('/results')
 def results():
     return render_template('results.html')
 
+## file process def
+def process_files(bam, fasta):
+
+    outfile = 'output.vcf.gz'
+    get_vcf(bam, fasta)
+    result = get_feats(outfile)
+    return result
+
 ## convert bam script
 def get_vcf(bam, fasta):
 
     try:
-        result = 0
+        result = subprocess.run(
+            ['python', 'bam2vcf.py', bam, fasta],
+            capture_output=True,
+            text=True
+        )
+        return result.stdout.strip()
 
     except Exception as e:
         return f"An error occurred: {e}"
