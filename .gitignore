@@ -10,3 +10,8 @@ index2.html
 uploads
 bs_ref.fasta
 bs_sorted.bam
+*.bam
+*.bcf
+*.pileup
+*.fai
+*.gz
