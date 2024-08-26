@@ -73,16 +73,16 @@ def results():
 def process_files(bam, fasta):
 
     outfile = 'output.vcf.gz'
-    get_vcf(bam, fasta)
+    get_vcf(bam, fasta, outfile)
     result = get_feats(outfile)
     return result
 
 ## convert bam script
-def get_vcf(bam, fasta):
+def get_vcf(bam, fasta, outfile):
 
     try:
         result = subprocess.run(
-            ['python', 'bam2vcf.py', bam, fasta],
+            ['python', 'bam2vcf.py', bam, fasta, outfile],
             capture_output=True,
             text=True
         )
