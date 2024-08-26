@@ -66,7 +66,7 @@ Feature Viewer web based app
 
 ##### DESIGN APPROACH AND ASSUMPTIONS #####
 
-	- assumption: processing would be handled by UNIX pipe for faster processing, currentl bottleneck at local implementation
+	- assumption: processing would be handled by UNIX pipe for faster processing, current bottleneck at local implementation
 	- assumption: adapters were not present in reads
 		*** cutadapt was run but adapters apeared to be already filtred
 	- assumption: quality was overall high across reads for sample set and quality visualization was low priority, skipped for current implementations
@@ -113,6 +113,6 @@ Feature Viewer web based app
 
  	4. next step: include quality scores in reports
 
- 	5. next step: improve UI and aestetics
+ 	5. next step: improve UI and aesthetics
 
 
