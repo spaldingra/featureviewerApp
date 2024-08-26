@@ -1,7 +1,11 @@
 ####   TERMINAL COMMAND LINE PROMPTS   ####
 ####   REFERENCE DOCUMENT ONLY   ####
 
-	all commands run at terminal through conda venv
+	** all commands run at terminal through conda venv
+	** some commands consolidated into app, i.e. steps after obtaining bam file
+	** many of these steps would normally be consolidated into single pipe, outputting vcf file
+
+
 	necessary tools:
 		1. cutadapt
 		2. bowtie2
@@ -20,14 +24,17 @@
 	
 	1. bowtie index
 
+		bowtie2-build bs_ref.fasta ASM
 
 	2. bowtie align
 
-			bowtie2 -x ASM -f bs_reads.fasta.gz -S bs_aligned.sam
+		bowtie2 -x ASM -f bs_reads.fasta.gz -S bs_aligned.sam
 
 #### convert and sort/index ####
 
 	1. samtools convert
+
+		samtools view -bS bs_aligned.sam > bs_aligned.bam
 
 	2. samtools sort and index
 
