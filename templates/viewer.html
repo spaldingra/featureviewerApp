@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Genome Viewer</title>
+    <style>
+        #viewer {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Genome Timeline Viewer</h1>
+    <div id="viewer"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.0/d3.min.js"></script>
+    <script src="{{url_for('static', filename='genome_viewer.js')}}"></script>
+    
+    <a href="/results"><button type="button">Back to Results</button></a>
+    <a href="/"><button type="button">Back to Home</button></a>
+</body>
+</html>

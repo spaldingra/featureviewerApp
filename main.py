@@ -69,6 +69,12 @@ def upload_file():
 def results():
     return render_template('results.html')
 
+## viewer test
+@app.route('/viewer')
+def viewer():
+    return render_template('viewer.html')
+
+
 ## file process def
 def process_files(bam, fasta):
 
@@ -76,6 +82,7 @@ def process_files(bam, fasta):
     get_vcf(bam, fasta, outfile)
     result = get_feats(outfile)
     return result
+    
 
 ## convert bam script
 def get_vcf(bam, fasta, outfile):
